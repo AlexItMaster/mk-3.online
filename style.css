@@ -278,3 +278,15 @@ body {
     font-family: "Mortal Kombat 3";
 }
 
+.reload-wrap {
+    position: absolute;
+    top: 10%;
+    z-index: 1000;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
+
+.reload-wrap .button {
+    margin-top: 0;
+}
+
