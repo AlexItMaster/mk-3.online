@@ -1,7 +1,6 @@
 //ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
 const $ARENAS = document.querySelector('.arenas');
 const $RANDOMBUTTON = document.querySelector('.button');
-let CHAMPION = false;
 
 // обект с данными игрока 1
 const player1 = {
@@ -12,7 +11,10 @@ const player1 = {
     waepon: ['sword', 'dagger', 'nunchucks'],
     attack: function (name) {
         console.log(name + ' Fight...');
-    }
+    },
+    changehp: changeHP,
+    elhp: elHP,
+    renderhp: renderHP
 };
 
 // обект с данными игрока 2
@@ -24,7 +26,10 @@ const player2 = {
     waepon: ['dagger', 'nunchucks'],
     attack: function (name) {
         console.log(name + ' Fight...');
-    }
+    },
+    changehp: changeHP,
+    elhp: elHP,
+    renderhp: renderHP
 };
 
 // Ф-Я СОЗДАНИЯ НОВОГО хтмл БЛОКА
@@ -72,37 +77,37 @@ function createPlayer(playerObj) {
 }
 
 // Ф-я высчитывает остаток жизни по пропущеным ударам
-function changeHP(player) {
-    // находим шкалу жизни и генерируем пропущенный удар силой от 0-20
-    const playerLife = document.querySelector('.player' + player.player + ' .life');
-    const lossesStep = generateRandomNumber20();
-
+function changeHP(lossesStep) {
     // вычитаем и сохраняем остаток жизни в объект
-    if (player.hp - lossesStep >= 0) {
-        player.hp -= lossesStep;
+    if (this.hp - lossesStep >= 0) {
+        this.hp -= lossesStep;
     } else {
-        player.hp = 0; // если шкала уходит в минуса то перезаписываем в 0
+        this.hp = 0; // если шкала уходит в минуса то перезаписываем в 0
     }
 
-    playerLife.style.width = player.hp + '%'; // визуально ширину шкалы приводим в соответствие с остатком жизни
+    this.renderhp();
 
-    // НОКАУТ
-    if (player.hp <= 0) {
-        addSalute(CHAMPION); // вызов ф-и вывода нового чемпиона на табло
-        $RANDOMBUTTON.disabled = 'disabled'; // блочим кнопку от нажатия
-    }
+    return this.hp;
+}
 
-    // фиксируем результаты остатка жизни
-    return {name: player.name, hp: player.hp};
+function elHP() {
+    return document.querySelector('.player' + this.player + ' .life');
+}
+
+function renderHP() {
+    let life = this.elhp();
+    life.style.width = this.hp + '%'; // визуально ширину шкалы приводим в соответствие с остатком жизни
 }
 
 // Ф-я формирует заголовок с именем нового чемпиона
-function playerWins(name) {
-    const title = document.querySelector('div.wins-title');
-    if (title) {
-        title.remove();
-    }
+function showResultText(name) {
+    const cloneTitle = document.querySelector('div.wins-title');
     const winsTitle = createElement('div', 'wins-title'); // создание блока заголовка
+
+    if (cloneTitle) {
+        cloneTitle.remove();
+    }
+
     winsTitle.innerText = (name) ? name + ' wins' : 'DRAW'; // создание правильной фразы (ПОБЕДА ИЛИ НИЧЬЯ)
 
     // возврат готового заголовка
@@ -110,36 +115,45 @@ function playerWins(name) {
 }
 
 // Ф-я рандомайзер от 1-20
-function generateRandomNumber20() {
-    return Math.ceil(Math.random() * 20);
+function getRandom(range) {
+    return Math.ceil(Math.random() * range);
 }
 
-// Ф-я вывода заголовка имени нового чемпиона
-function addSalute (nameChampion) {
-    $ARENAS.appendChild(playerWins(nameChampion)); // выводим имя нового чемпиона на табло
-}
+function createReloadButton() {
+    const $reloadWrap = createElement('div', 'reload-wrap');
+    const $restart = createElement('button', 'button');
 
-// Ф-я обрабатывает балы и оглашает чемпиона
-function bestOfTheBest (playerHP1, playerHP2){
-    if (playerHP1.hp > playerHP2.hp){
-        CHAMPION = playerHP1.name;
-    } else if (playerHP2.hp > playerHP1.hp) {
-        CHAMPION = playerHP2.name;
-    } else {
-        CHAMPION = false;
-        addSalute(CHAMPION); // выводим имя нового чемпиона на табло
-    }
-    //console.log(playerHP1.name + ' - ' + playerHP1.hp + ' | ' + playerHP2.name + ' - ' + playerHP2.hp);
+    $restart.innerText = 'Restart';
+
+    $reloadWrap.appendChild($restart);
+
+    return $reloadWrap;
 }
 
 // Создание обработчика события клик по кнопке РАНДОМ
 $RANDOMBUTTON.addEventListener('click', function() {
-    // сохранение результатов боя....
-    const playerHP1 = changeHP(player1);
-    const playerHP2 = changeHP(player2);
+    let player1HP = player1.changehp(getRandom(20));
+    let player2HP = player2.changehp(getRandom(20));
 
-    // вызов функции которая вичислит победителя получив судейские балы
-    bestOfTheBest(playerHP1, playerHP2);
+    if (player1HP === 0 && player1HP < player2HP){
+        $ARENAS.appendChild(showResultText(player2.name)); // выводим имя чемпиона на табло
+    } else if (player2HP === 0 && player2HP < player1HP) {
+        $ARENAS.appendChild(showResultText(player1.name)); // выводим имя чемпиона на табло
+    } else if (player1HP === 0 && player2HP === 0) {
+        $ARENAS.appendChild(showResultText()); // выводим нечью на табло
+    }
+
+    // НОКАУТ
+    if (player1HP === 0 || player2HP === 0) {
+        $RANDOMBUTTON.disabled = true; // блочим кнопку от нажатия
+
+        $ARENAS.appendChild(createReloadButton()); //добавляэм кнопку рестарт на арену
+        const $RESTART = document.querySelector('.reload-wrap .button'); // находим кнопку рестарт в дом
+
+        $RESTART.addEventListener('click', function(){ // по клику на рестарт обновляем станицу
+            window.location.reload();
+        });
+    }
 });
 
 // создание игроков и добавление их на арену
