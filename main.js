@@ -1,6 +1,16 @@
 //ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
-const $ARENAS = document.querySelector('.arenas');
-const $RANDOMBUTTON = document.querySelector('.button');
+const $ARENAS = document.querySelector('.arenas'); // обращение к арене
+const $RANDOMBUTTON = document.querySelector('.button'); // обращение к кнопке
+const $formFight = document.querySelector('.control'); // обращение к форме
+
+// объект удар служит для определени силы удара
+const HIT = {
+    head: 30,
+    body: 25,
+    foot: 20,
+}
+
+const ATTACK = ['head', 'body', 'foot']; // варианты куда может быть направлена атака
 
 // обект с данными игрока 1
 const player1 = {
@@ -9,12 +19,10 @@ const player1 = {
     hp: 100,
     img: 'http://reactmarathon-api.herokuapp.com/assets/scorpion.gif',
     waepon: ['sword', 'dagger', 'nunchucks'],
-    attack: function (name) {
-        console.log(name + ' Fight...');
-    },
-    changehp: changeHP,
-    elhp: elHP,
-    renderhp: renderHP
+    attack,
+    changeHP,
+    elHP,
+    renderHP
 };
 
 // обект с данными игрока 2
@@ -24,13 +32,37 @@ const player2 = {
     hp: 100,
     img: 'http://reactmarathon-api.herokuapp.com/assets/subzero.gif',
     waepon: ['dagger', 'nunchucks'],
-    attack: function (name) {
-        console.log(name + ' Fight...');
-    },
-    changehp: changeHP,
-    elhp: elHP,
-    renderhp: renderHP
+    attack,
+    changeHP,
+    elHP,
+    renderHP
 };
+
+// Ф-я обращается к шкале жизни игрока
+function elHP() {
+    return document.querySelector('.player' + this.player + ' .life'); // обращение к шкале жизни игрока
+}
+
+// Ф-я изменяет шкалу жизни игрока
+function renderHP() {
+    this.elHP().style.width = this.hp + '%'; // визуально ширину шкалы приводим в соответствие с остатком жизни
+}
+
+// Ф-я высчитывает остаток жизни по пропущеным ударам
+function changeHP(lossesStep) {
+    // вычитаем и сохраняем остаток жизни в объект
+    if (this.hp - lossesStep >= 0) {
+        this.hp -= lossesStep;
+    } else {
+        this.hp = 0; // если шкала уходит в минуса то перезаписываем в 0
+    }
+
+    return this.hp;
+}
+
+function attack() {
+    console.log(this.name + ' Fight...');
+}
 
 // Ф-Я СОЗДАНИЯ НОВОГО хтмл БЛОКА
 function createElement(tag, className, atrList) {
@@ -76,37 +108,19 @@ function createPlayer(playerObj) {
     return $player;
 }
 
-// Ф-я высчитывает остаток жизни по пропущеным ударам
-function changeHP(lossesStep) {
-    // вычитаем и сохраняем остаток жизни в объект
-    if (this.hp - lossesStep >= 0) {
-        this.hp -= lossesStep;
-    } else {
-        this.hp = 0; // если шкала уходит в минуса то перезаписываем в 0
-    }
-
-    this.renderhp();
-
-    return this.hp;
+// Ф-я рандомайзер, создает случайное число из указываемого диапазона
+function getRandom(range) {
+    return Math.ceil(Math.random() * range);
 }
 
-function elHP() {
-    return document.querySelector('.player' + this.player + ' .life');
-}
-
-function renderHP() {
-    let life = this.elhp();
-    life.style.width = this.hp + '%'; // визуально ширину шкалы приводим в соответствие с остатком жизни
+//ф-я добавления нового елемента на арену
+function addingToArena(elem) {
+    $ARENAS.appendChild(elem);
 }
 
 // Ф-я формирует заголовок с именем нового чемпиона
 function showResultText(name) {
-    const cloneTitle = document.querySelector('div.wins-title');
-    const winsTitle = createElement('div', 'wins-title'); // создание блока заголовка
-
-    if (cloneTitle) {
-        cloneTitle.remove();
-    }
+    const winsTitle = createElement('div', 'loseTitle'); // создание блока заголовка
 
     winsTitle.innerText = (name) ? name + ' wins' : 'DRAW'; // создание правильной фразы (ПОБЕДА ИЛИ НИЧЬЯ)
 
@@ -114,49 +128,86 @@ function showResultText(name) {
     return winsTitle;
 }
 
-// Ф-я рандомайзер от 1-20
-function getRandom(range) {
-    return Math.ceil(Math.random() * range);
-}
-
+//Ф-я создает кнопку рестарт для обновления страницы
 function createReloadButton() {
-    const $reloadWrap = createElement('div', 'reload-wrap');
-    const $restart = createElement('button', 'button');
+    const $reloadButtonDiv = createElement('div', 'reloadWrap');
+    const $reloadButton = createElement('button', 'button');
+    $reloadButton.innerText = 'Restart';
 
-    $restart.innerText = 'Restart';
+    $reloadButton.addEventListener('click', function(){ // по клику на рестарт обновляем станицу
+        window.location.reload();
+    });
 
-    $reloadWrap.appendChild($restart);
-
-    return $reloadWrap;
+    $reloadButtonDiv.appendChild($reloadButton);
+    addingToArena($reloadButtonDiv); //добавляэм кнопку рестарт на арену
 }
 
-// Создание обработчика события клик по кнопке РАНДОМ
-$RANDOMBUTTON.addEventListener('click', function() {
-    let player1HP = player1.changehp(getRandom(20));
-    let player2HP = player2.changehp(getRandom(20));
+//Ф-я создает атаку противника (компютера)
+function enemyAttack() {
+    const hit = ATTACK[getRandom(3) - 1]; // противник (компютер) совершает удар по случайной части тела своего протвника (игрока)
+    const defence = ATTACK[getRandom(3) - 1]; // противник (компютер) совершает защиту своей случайной части тела
 
-    if (player1HP === 0 && player1HP < player2HP){
-        $ARENAS.appendChild(showResultText(player2.name)); // выводим имя чемпиона на табло
+    return {
+        value: getRandom(HIT[hit]), // сила удара
+        hit, // удар по какойто части тела
+        defence, // защита какойто части тела
+    }
+}
+
+// Ф-я создает атаку игрока по противнику (компютеру)
+function myAttack() {
+    const attack = {};
+
+    // пробегаем по елементам формы
+    for(let item of $formFight) {
+        if(item.checked && item.name === 'hit') { // отфильтровываем выбранную часть тела для удара
+            attack.value = getRandom(HIT[item.value]); // сила удара
+            attack.hit = item.value; // удар по какойто части тела
+        }
+
+        if(item.checked && item.name === 'defence') { // отфильтровываем выбранную часть тела для защиты
+            attack.defence = item.value; // защита какойто части тела
+        }
+
+        item.checked = false; // сбрасываем выбранные параметры атаки
+    }
+
+    return attack;
+}
+
+// создание игроков и добавление их на арену
+addingToArena(createPlayer(player1));
+addingToArena(createPlayer(player2));
+
+// Создание обработчика события клик по кнопке FIGHT
+$formFight.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const enemy = enemyAttack();
+    const attack = myAttack();
+    let player1HP = player1.hp;
+    let player2HP = player2.hp;
+
+    if(enemy.hit !== attack.defence) {
+        player1HP = player1.changeHP(attack.value);
+        player1.renderHP();
+    }
+
+    if(attack.hit !== enemy.defence) {
+        player2HP = player2.changeHP(enemy.value);
+        player2.renderHP();
+    }
+
+    if (player1HP === 0 && player1HP < player2HP) {
+        addingToArena(showResultText(player2.name)); // выводим имя чемпиона на табло
     } else if (player2HP === 0 && player2HP < player1HP) {
-        $ARENAS.appendChild(showResultText(player1.name)); // выводим имя чемпиона на табло
+        addingToArena(showResultText(player1.name)); // выводим имя чемпиона на табло
     } else if (player1HP === 0 && player2HP === 0) {
-        $ARENAS.appendChild(showResultText()); // выводим нечью на табло
+        addingToArena(showResultText()); // выводим нечью на табло
     }
 
     // НОКАУТ
     if (player1HP === 0 || player2HP === 0) {
         $RANDOMBUTTON.disabled = true; // блочим кнопку от нажатия
-
-        $ARENAS.appendChild(createReloadButton()); //добавляэм кнопку рестарт на арену
-        const $RESTART = document.querySelector('.reload-wrap .button'); // находим кнопку рестарт в дом
-
-        $RESTART.addEventListener('click', function(){ // по клику на рестарт обновляем станицу
-            window.location.reload();
-        });
+        createReloadButton();
     }
 });
-
-// создание игроков и добавление их на арену
-$ARENAS.appendChild(createPlayer(player1));
-$ARENAS.appendChild(createPlayer(player2));
-
