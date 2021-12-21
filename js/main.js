@@ -1,24 +1,71 @@
 /** Подключение модулей */
-import { logs } from './js/logs.js';
-import { player1, player2 } from './js/players.js';
-import { HIT, ATTACK } from './js/raund-config.js';
-import addingToArena from './js/arena.js';
-import time from './js/date.js';
-import getRandom from './js/randomiser.js';
-import createReloadButton from './js/reload-button.js';
-import showResultText from './js/show-result-text.js';
-import showResult from './js/show-result.js';
-import enemyAttack from './js/enemy-attack.js';
-import playerAttack from './js/player-attack.js';
-import elHP from './js/elhp.js';
-import renderHP from './js/render-hp.js';
-import changeHP from './js/change-hp.js';
-import createElement from './js/create-element.js';
+import { logs } from './logs.js';
+import addingToArena from './arena.js';
+import time from './date.js';
+import getRandom from './randomiser.js';
+import showResult from './show-result.js';
+import enemyAttack from './enemy-attack.js';
+import playerAttack from './player-attack.js';
+import createElement from './create-element.js';
 
-const $ARENAS = document.querySelector('.arenas'); // обращение к арене
-const $RANDOMBUTTON = document.querySelector('.button'); // обращение к кнопке
-const $formFight = document.querySelector('.control'); // обращение к форме
+export const $ARENAS = document.querySelector('.arenas'); // обращение к арене
+export const $RANDOMBUTTON = document.querySelector('.button'); // обращение к кнопке
+export const $formFight = document.querySelector('.control'); // обращение к форме
 const $chat = document.querySelector('.chat'); // обращение к
+
+/** Объект с данными игрока 1 */
+export const player1 = {
+    player: 1,
+    name: 'Scorpion',
+    hp: 100,
+    img: 'http://reactmarathon-api.herokuapp.com/assets/scorpion.gif',
+    waepon: ['sword', 'dagger', 'nunchucks'],
+    changeHP,
+    elHP,
+    renderHP
+};
+
+/** Объект с данными игрока 2 */
+export const player2 = {
+    player: 2,
+    name: 'Subzero',
+    hp: 100,
+    img: 'http://reactmarathon-api.herokuapp.com/assets/subzero.gif',
+    waepon: ['dagger', 'nunchucks'],
+    changeHP,
+    elHP,
+    renderHP
+};
+
+/**
+ * Ф-я обращается к шкале жизни игрока
+ *
+ * @returns {Element|null}
+ */
+function elHP() {
+    return document.querySelector('.player' + this.player + ' .life'); // обращение к шкале жизни игрока
+}
+
+/** Ф-я изменяет шкалу жизни игрока */
+function renderHP() {
+    this.elHP().style.width = this.hp + '%'; // визуально ширину шкалы приводим в соответствие с остатком жизни
+}
+
+/**
+ * Ф-я высчитывает остаток жизни по пропущеным ударам
+ *
+ * @param {number} lossesStep - Сила пропущенного удара или на сколько процентов нужно уменьшить жизнь
+ * @returns {number} - Остаток жизни
+ */
+function changeHP(lossesStep) {
+    this.hp -= lossesStep;
+
+    if (this.hp <= 0) {
+        this.hp = 0; // если шкала уходит в минуса то перезаписываем в 0
+    }
+
+    return this.hp;
+}
 
 /**
  * Ф-я создания нового игрока
@@ -58,7 +105,7 @@ const createPlayer = (obj) => {
  * @param {object} player1 - Тот кто наносит удар
  * @param {object} player2 - Тот кто защищается
  */
-const generateLogs = (type, player1, player2, valueHP) => {
+export const generateLogs = (type, player1, player2, valueHP) => {
     const {name:name1, hp:hp1} = player1;
     const {name:name2, hp:hp2} = player2;
     const logsType = logs[type];

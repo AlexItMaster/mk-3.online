@@ -1,3 +1,6 @@
+import createElement from './create-element.js';
+import addingToArena from './arena.js';
+
 /** Ф-я создает кнопку рестарт для обновления страницы */
 const createReloadButton = () => {
     const $reloadButtonDiv = createElement('div', 'reloadWrap');

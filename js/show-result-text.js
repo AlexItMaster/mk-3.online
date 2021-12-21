@@ -1,3 +1,5 @@
+import createElement from './create-element.js';
+
 /**
  * Ф-я формирует заголовок с именем нового чемпиона
  *

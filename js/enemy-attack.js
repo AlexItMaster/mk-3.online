@@ -1,3 +1,6 @@
+import { HIT, ATTACK } from './raund-config.js';
+import getRandom from './randomiser.js';
+
 /**
  * Ф-я создает атаку противника (компютера)
  *

@@ -1,3 +1,8 @@
+import { player1, player2, $RANDOMBUTTON, generateLogs } from './main.js';
+import showResultText from './show-result-text.js';
+import addingToArena from './arena.js';
+import createReloadButton from './reload-button.js';
+
 /** Ф-я выводит результат поединка */
 const showResult = () => {
     const {name:name1, hp:hp1} = player1;

@@ -1,3 +1,7 @@
+import { HIT, ATTACK } from './raund-config.js';
+import getRandom from './randomiser.js';
+import { $formFight } from './main.js';
+
 /**
  * Ф-я создает атаку игрока по противнику (компютеру)
  *
