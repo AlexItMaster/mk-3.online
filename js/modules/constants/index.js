@@ -1,4 +1,16 @@
-export const logs = {
+/** ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ */
+/** Объект удар служит для определения силы удара */
+export const HIT = {
+    head: 30,
+    body: 25,
+    foot: 20,
+};
+
+/** Массив атака содержит варианты участков тела для атаки */
+export const ATTACK = ['head', 'body', 'foot'];
+
+/** Логи */
+export const LOGS = {
     start: 'Часы показывали [time], когда [player1] и [player2] бросили вызов друг другу.',
     end: [
         'Результат удара [playerWins]: [playerLose] - труп',
