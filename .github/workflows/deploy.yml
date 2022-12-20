@@ -19,4 +19,4 @@ jobs:
       #- run: npm ci
       #- run: npm run build
       # Deploy
-      - run: rsync -e "ssh -p 20022 -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . fh475787.ftp.tools
+      - run: rsync -e "ssh -p 20022 -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . fh475787.ftp.tools/mk-3.online/www/
