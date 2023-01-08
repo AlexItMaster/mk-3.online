@@ -477,21 +477,21 @@ form:invalid button:active::after {
 
 input {
     display: none;
-}
 
-input[type=radio]:checked + label > span {
-    color: #fff;
-    font-weight: 700;
-    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-}
+    &[type=radio]:checked + label > span {
+        color: #fff;
+        font-weight: 700;
+        text-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+    }
 
-input[type=radio]:checked + label > span::before {
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
-    background: #f5d100;
-}
+    &[type=radio]:checked + label > span::before {
+        box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+        background: #f5d100;
+    }
 
-input[type=radio]:checked + label > span:hover {
-    background: none;
+    &[type=radio]:checked + label > span:hover {
+        background: none;
+    }
 }
 
 /*** TABLETS ***/
