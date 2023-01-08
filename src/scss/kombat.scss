@@ -18,19 +18,15 @@ body {
     background: no-repeat center/70px url(../images/loader.gif) #424466;
 }
 
-.disabled body {    
-    visibility: hidden;
-    opacity: 0;
-}
-
 body {        
     visibility: visible;
     opacity: 1;    
-    transition: opacity 3s;       
-}
+    transition: opacity 3s;
 
-.disabled .main {
-    display: none;
+    .disabled & {
+        visibility: hidden;
+        opacity: 0;
+    }
 }
 
 .gong-popup {
@@ -45,11 +41,11 @@ body {
     transition: visibility 0s 3s, opacity 1s linear;       
     background: url('../images/fight.gif') 50% 50% no-repeat;
     background-size: 400px;
-}
 
-.gong-popup.disabled {    
-    visibility: hidden;
-    opacity: 0;
+    &.disabled {
+        visibility: hidden;
+        opacity: 0;
+    }
 }
 
 .main {
@@ -58,14 +54,18 @@ body {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 70% 30%;
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
+    grid-column-gap: 0;
+    grid-row-gap: 0;
     max-width: 1200px;
     height: 100%;
     margin: 0 auto;
     align-items: center;
     transition: top 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     background: #424466;
+
+    .disabled & {
+        display: none;
+    }
 }
 
 .wall {
@@ -75,16 +75,16 @@ body {
     width: 87px;
     height: 100%;
     background: url(../images/wall.png) 0 0 repeat-y;
-    background-size: contain;    
-}
+    background-size: contain;
 
-.wall.-left {
-    left: -48px;
-}
+    &.-left {
+        left: -48px;
+    }
 
-.wall.-right {
-    right: -48px;
-    transform: rotateY(180deg);
+    &.-right {
+        right: -48px;
+        transform: rotateY(180deg);
+    }
 }
 
 .arenas {
@@ -106,18 +106,18 @@ body {
 
 .player1 {
     left: 0;
-}
 
-.player1.priority {
-    z-index: 3;
+    &.priority {
+        z-index: 3;
+    }
 }
 
 .player2 {
     right: 0;
-}
 
-.player2.priority {
-    z-index: 3;
+    &.priority {
+        z-index: 3;
+    }
 }
 
 .progressbar {
@@ -127,15 +127,15 @@ body {
     width: 70%;
     border: 4px solid #f5d100;
     background-color: #cd0e03;
-}
 
-.player1 .progressbar {
-    left: 50px;
-}
+    .player1 & {
+        left: 50px;
+    }
 
-.player2 .progressbar {
-    right: 50px;
-    flex-direction: row-reverse;
+    .player2 & {
+        right: 50px;
+        flex-direction: row-reverse;
+    }
 }
 
 .life {
@@ -157,14 +157,14 @@ body {
     font-family: 'Mortal Kombat 3';
     letter-spacing: 2px;
     text-transform: uppercase;
-}
 
-.player1 .name {
-    left: 5px;
-}
+    .player1 & {
+        left: 5px;
+    }
 
-.player2 .name {
-    right: 5px;
+    .player2 & {
+        right: 5px;
+    }
 }
 
 .chat-holder {
@@ -194,108 +194,111 @@ body {
     overflow: auto;
     color: white;
     font-family: monospace;
-       
-}
 
-.chat::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
 
-.chat::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: 3px;
-    background: rgba(0, 0, 0, 0.1);
-}
+    &::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        border-radius: 3px;
+        background: rgba(0, 0, 0, 0.1);
+    }
 
-.chat::-webkit-scrollbar-corner {
-    background: transparent;
-}
+    &::-webkit-scrollbar-corner {
+        background: transparent;
+    }
 
-.chat::-webkit-scrollbar-thumb {
-    border-radius: 3px;
-    background: linear-gradient(transparent, #000);
-    /* outline: 1px solid #000; */
-}
+    &::-webkit-scrollbar-thumb {
+        border-radius: 3px;
+        background: linear-gradient(transparent, #000);
 
-.chat::-webkit-scrollbar-thumb:hover {
-    border-radius: 3px;
-    background: linear-gradient(transparent, #f5d100);
-    /* outline: 1px solid #000; */
-}
+        &:hover {
+            border-radius: 3px;
+            background: linear-gradient(transparent, #f5d100);
+        }
+    }
 
-.chat p b {
-    color: #09f;
-    font-family: "Mortal Kombat 3";
-}
+    p {
+        b {
+            color: #09f;
+            font-family: "Mortal Kombat 3";
+        }
 
-.chat p em {
-    color: #f5d100;
-    font-family: "Mortal Kombat 3";
-}
+        em {
+            color: #f5d100;
+            font-family: "Mortal Kombat 3";
+        }
 
-.chat p u {
-    color: #f00;
+        u {
+            color: #f00;
+        }
+    }
 }
 
 .character {
     position: absolute;
     bottom: 3%;
     width: 150px;
-    height: 60%;    
+    height: 60%;
     transition: 1s;
-}
 
-.character.jump-to-top {
-    bottom: 20%;
-}
+    &.jump-to-top {
+        bottom: 20%;
+    }
 
-.player1 .character {
-    left: 20%;
-}
+    .player1 & .player1-fly,
+    .player2 & .player2-fly {
+        position: absolute;
+        top: 0;
+        z-index: 2;
+        display: inline-block;
+        transition: 3s linear;
+    }
 
-.player1 .character .player1-fly,
-.player2 .character .player2-fly {
-    position: absolute;
-    top: 0;
-    z-index: 2;
-    display: inline-block;
-    transition: 3s linear;
-}
+    .player1 & {
+        left: 20%;
 
-.player1 .character .player1-fly {
-    left: 50%;
-}
+        img {
+            left: 0;
+        }
 
-.player2 .character .player2-fly {
-    right: 50%;
-}
+        &.run-back {
+            img {
+                transform: scaleX(-1);
+            }
+        }
 
-.player2 .character {
-    right: 20%;
-}
+        .player1-fly {
+            left: 50%;
+        }
+    }
 
-.player2 .character img,
-.player1 .character.run-back img {
-    transform: scaleX(-1);
-}
+    .player2 & {
+        right: 20%;
 
-.player2 .character.run-back img {
-    transform: scaleX(1);
-}
+        img {
+            right: 0;
+            transform: scaleX(-1);
+        }
 
-.character img {
-    position: absolute;
-    bottom: 0;
-    height: 100%;
-}
+        &.run-back {
+            img {
+                transform: scaleX(1);
+            }
+        }
 
-.player1 .character img {
-    left: 0;
-}
+        .player2-fly {
+            right: 50%;
+        }
+    }
 
-.player2 .character img {
-    right: 0;
+    img {
+        position: absolute;
+        bottom: 0;
+        height: 100%;
+    }
 }
 
 .resultTitle {
@@ -326,30 +329,30 @@ body {
     cursor: pointer;
     outline: none;
     background-color: #f5d100;
-}
 
-.button:hover {
-    background-color: #ffea00;
-}
+    &:hover {
+        background-color: #ffea00;
+    }
 
-.button:active {
-    top: 2px;
-}
+    &:active {
+        top: 2px;
 
-.button:active::after {
-    top: 1px;
-}
+        &::after {
+            top: 1px;
+        }
+    }
 
-.button::after {
-    content: "";
-    position: absolute;
-    top: 4px;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 4px;
-    z-index: -1;
-    background-color: #cd0e03;
+    &::after {
+        content: "";
+        position: absolute;
+        top: 4px;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+        z-index: -1;
+        background-color: #cd0e03;
+    }
 }
 
 .reloadWrap {
@@ -358,10 +361,10 @@ body {
     left: 50%;
     z-index: 1000;
     transform: translate(-50%, 0%);
-}
 
-.reloadWrap button {
-    margin-top: 0;
+    button {
+        margin-top: 0;
+    }
 }
 
 button[disabled],
@@ -403,29 +406,29 @@ form:invalid button:active::after {
     transform: translate(-50%, -50%) scale(1);
     transition: 0.3s;
     background: rgba(0, 0, 0, 0.6);
-}
 
-.control.disabled {
-    transform: translate(-50%, -50%) scale(0);
+    &.disabled {
+        transform: translate(-50%, -50%) scale(0);
+    }
 }
 
 .inputWrap {
     position: relative;
     width: 280px;
     margin-bottom: 24px;
+
+    h2 {
+        margin: 0 auto 20px;
+        color: #efefef;
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-family: 'Mortal Kombat 3';
+    }
 }
 
 .buttonWrap {
     margin-top: 12px;
-}
-
-.inputWrap h2 {
-    margin: 0 auto 20px;
-    color: #efefef;
-    text-align: center;
-    text-transform: uppercase;
-    font-weight: 700;
-    font-family: 'Mortal Kombat 3';
 }
 
 .target-list {
@@ -436,40 +439,40 @@ form:invalid button:active::after {
     border: solid 3px #cd0e03;
     color: #efefef;
     font-family: 'Mortal Kombat 3';
-}
 
-.target-list label {
-    cursor: pointer;
-}
+    label {
+        cursor: pointer;
 
-.target-list label:nth-of-type(2) {
-    margin: 0 -4.5px;
-}
+        &:nth-of-type(2) {
+            margin: 0 -4.5px;
+        }
 
-.target-list label span {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    font-size: 18px;
-    line-height: 2.7em;
-    transition: 0.3s;
-    text-align: center;
-}
+        span {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            font-size: 18px;
+            line-height: 2.7em;
+            transition: 0.3s;
+            text-align: center;
 
-.target-list label span::before {
-    position: absolute;
-    left: 0;
-    top: 0;
-    content: "";
-    width: 100%;
-    height: 100%;
-    transform: scaleY(1.4);
-    transition: 0.3s;
-    z-index: -1;
-}
+            &:hover {
+                background-color: rgba(107, 185, 240, 0.2);
+            }
 
-.target-list label span:hover {
-    background-color: rgba(107, 185, 240, 0.2);
+            &::before {
+                position: absolute;
+                left: 0;
+                top: 0;
+                content: "";
+                width: 100%;
+                height: 100%;
+                transform: scaleY(1.4);
+                transition: 0.3s;
+                z-index: -1;
+            }
+        }
+    }
 }
 
 input {
@@ -479,11 +482,11 @@ input {
 input[type=radio]:checked + label > span {
     color: #fff;
     font-weight: 700;
-    text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 }
 
 input[type=radio]:checked + label > span::before {
-    box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
     background: #f5d100;
 }
 
@@ -525,9 +528,9 @@ input[type=radio]:checked + label > span:hover {
     .inputWrap {
         width: 280px;
         margin-bottom: 14px;
-    }
 
-    .inputWrap h2 {margin-bottom: 14px;}
+        h2 {margin-bottom: 14px;}
+    }
 
     .target-list label span {
         font-size: 14px;
@@ -553,10 +556,10 @@ input[type=radio]:checked + label > span:hover {
 
     .character {
         height: 40%;
-    }
 
-    .character.jump-to-top {
-        bottom: 20%;
+        &.jump-to-top {
+            bottom: 20%;
+        }
     }
 
     .reloadWrap {
@@ -570,17 +573,16 @@ input[type=radio]:checked + label > span:hover {
 
     .inputWrap {
         margin-bottom: 14px;
-    }
-    
-    .inputWrap h2 {
-        margin-bottom: 14px;
+
+        h2 {
+            margin-bottom: 14px;
+        }
     }
 
     .target-list label span {
         font-size: 14px;
         line-height: 2.4em;        
     }
-    
 }
 
 /*** PHONES ***/
@@ -622,11 +624,11 @@ input[type=radio]:checked + label > span:hover {
 
     .inputWrap {
         margin-bottom: 8px;
-    }
-    
-    .inputWrap h2 {
-        font-size: 12px;
-        margin-bottom: 8px;
+
+        h2 {
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
     }
 
     .target-list label span {
@@ -661,20 +663,11 @@ input[type=radio]:checked + label > span:hover {
 
     .character {
         height: 35%;
-    }
 
-    .character.jump-to-top {
-        bottom: 12%;
+        &.jump-to-top {
+            bottom: 12%;
+        }
     }
-
-    /* треба доробити можливість налаштування відстані між героями так щоб вони не йовзали сраками */
-    /* .player1 .character.run {
-        left: 142%;
-    }
-
-    .player2 .character.run {
-        right: 142%;
-    } */
 
     .reloadWrap {
         top: 16%;
@@ -688,11 +681,11 @@ input[type=radio]:checked + label > span:hover {
     .inputWrap {
         width: 230px;
         margin-bottom: 12px;
-    }
-    
-    .inputWrap h2 {
-        font-size: 18px;
-        margin-bottom: 12px;
+
+        h2 {
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
     }
 
     .target-list label span {

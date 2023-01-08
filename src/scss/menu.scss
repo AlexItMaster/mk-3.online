@@ -11,29 +11,29 @@
 
 html {
     background: #424466;
-}
 
-.disabled body {
-    opacity: 0;
+    &.disabled > body {
+        opacity: 0;
+    }
 }
 
 body {
     opacity: 1;
     transition: opacity 3s;
-}
 
-body::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
 
-body::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.8);
-}
+    &::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.8);
+    }
 
-body::-webkit-scrollbar-thumb:hover {
-    border-radius: 3px;
-    background: linear-gradient(transparent, #f5d100);
+    &::-webkit-scrollbar-thumb:hover {
+        border-radius: 3px;
+        background: linear-gradient(transparent, #f5d100);
+    }
 }
 
 .sound-menu-bg {
@@ -41,10 +41,10 @@ body::-webkit-scrollbar-thumb:hover {
     top: 10px;
     right: 20px;
     opacity: 0;
-}
 
-.sound-menu-bg:hover {
-    opacity: 0.5;
+    &:hover {
+        opacity: 0.5;
+    }
 }
 
 .bg {    
@@ -56,10 +56,10 @@ body::-webkit-scrollbar-thumb:hover {
     transition: opacity 3s;
     background: url('../images/menu-bg.png') 50% 50% no-repeat #424542;
     background-size: cover;
-}
 
-.disabled .bg {
-    opacity: 0;
+    .disabled & {
+        opacity: 0;
+    }
 }
 
 .biography {    
@@ -74,31 +74,31 @@ body::-webkit-scrollbar-thumb:hover {
     transition: top 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     background: url('../images/biography-bg.png') 0 0 no-repeat;    
     background-size: contain;
-}
 
-.biography.disabled {    
-    top: -3000px;
-}
+    &.disabled {
+        top: -3000px;
+    }
 
-.biography::after {
-    display: block;
-    content: '';
-    padding-top: 64.05%;
-}
+    &::after {
+         display: block;
+         content: '';
+         padding-top: 64.05%;
+    }
 
-.biography img {
-    position: absolute;    
-    bottom: 3.4%;
-    width: 34%;
-    z-index: 5;
-}
+    & img {
+        position: absolute;
+        bottom: 3.4%;
+        width: 34%;
+        z-index: 5;
 
-.biography img.player1 {
-    left: 9.7%;
-}
+        &.player1 {
+            left: 9.7%;
+        }
 
-.biography img.player2 {
-    right: 9.7%;
+        &.player2 {
+            right: 9.7%;
+        }
+    }
 }
 
 .start-loader {
@@ -113,16 +113,16 @@ body::-webkit-scrollbar-thumb:hover {
     transition: visibility 0s 3s, opacity 1s linear;       
     background: url('../images/logo-mk3-animate.gif') 50% 50% no-repeat #000;
     background-size: 40%;
-}
 
-.start-loader.disabled {    
-    visibility: hidden;
-    opacity: 0;
-    z-index: -2;
-}
+    &.disabled {
+        visibility: hidden;
+        opacity: 0;
+        z-index: -2;
+    }
 
-.start-loader:hover {
-    cursor: pointer;
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .menu-holder {
@@ -132,10 +132,10 @@ body::-webkit-scrollbar-thumb:hover {
     width: 100%;
     height: 100%;        
     transition: top 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
 
-.menu-holder.disabled {
-    top: -3000px;
+    &.disabled {
+        top: -3000px;
+    }
 }
 
 .menu-grid-wrap {
@@ -168,14 +168,14 @@ body::-webkit-scrollbar-thumb:hover {
     grid-template-rows: repeat(5, 1fr);
     grid-column-gap: 6px;
     grid-row-gap: 6px;
-}
 
-.menu.blocked .avatar:not(.div-logo) {
-    cursor: not-allowed;
-}
+    &.blocked .avatar:not(.div-logo) {
+        cursor: not-allowed;
+    }
 
-.menu.blocked .avatar:not(.div-logo):hover:before {
-    display: none;
+    &.blocked .avatar:not(.div-logo):hover:before {
+        display: none;
+    }
 }
 
 .avatar {
@@ -184,44 +184,45 @@ body::-webkit-scrollbar-thumb:hover {
     z-index: 1;
     cursor: pointer;
     background: no-repeat center/40px url(../images/loader.gif);
-}
 
-.avatar:hover,
-.avatar.active1, 
-.avatar.active2 {
-    z-index: 2;
-}
+    &:hover,
+    &.active1,
+    &.active2 {
+        z-index: 2;
+    }
 
-.avatar:hover:before,
-.avatar.active1:after, 
-.avatar.active2:after {
-    content: "";
-    display: block;
-    width: calc(100% + 4px);
-    height: calc(100% + 4px);
-    top: -2px;
-    left: -2px;
-    position: absolute;
-}
+    &:hover:before,
+    &.active1:after,
+    &.active2:after {
+        content: "";
+        display: block;
+        width: calc(100% + 4px);
+        height: calc(100% + 4px);
+        top: -2px;
+        left: -2px;
+        position: absolute;
+    }
 
-.avatar:hover:before {
-    border: 14px solid #21aa21;
-}
+    &:hover:before {
+        border: 14px solid #21aa21;
+    }
 
-.avatar.active1:after,
-.avatar.active2:after {
-    border: 14px solid #f00;
-}
+    &.active1:after,
+    &.active2:after {
+        border: 14px solid #f00;
+    }
 
-.avatar img {
-    width: 100%;
-    height: 100%;
-}
+    & img {
+        width: 100%;
+        height: 100%;
+    }
 
-.avatar[data-players-collection='1'] {display: none;}
-.avatar[data-players-collection='2'] {display: none;}
-.menu[data-players-collection='1'] .avatar[data-players-collection='1'] {display: block;}
-.menu[data-players-collection='2'] .avatar[data-players-collection='2'] {display: block;}
+    &[data-players-collection='1'] {display: none;}
+    &[data-players-collection='2'] {display: none;}
+
+    .menu[data-players-collection='1'] &[data-players-collection='1'] {display: block;}
+    .menu[data-players-collection='2'] &[data-players-collection='2'] {display: block;}
+}
 
 .div1 { grid-area: 1 / 1 / 2 / 2; }
 .div2 { grid-area: 1 / 2 / 2 / 3; }
@@ -243,41 +244,41 @@ body::-webkit-scrollbar-thumb:hover {
     
 .div-logo { 
     cursor: default;
-    grid-area: 2 / 4 / 3 / 5;  
-}
+    grid-area: 2 / 4 / 3 / 5;
 
-.div-logo:hover:before {
-    display: none;
+    &:hover:before {
+        display: none;
+    }
 }
 
 .pedestal1,
 .pedestal2 {
     position: relative;
+
+    & img,
+    & img {
+        position: absolute;
+        height: 100%;
+        margin-top: 5%;
+        z-index: 2;
+    }
 }
 
 .pedestal1 {
     grid-area: 3 / 1 / 6 / 3;
+
+    & img {
+        right: 0;
+    }
 }
 
 .pedestal2 {
     grid-area: 3 / 6 / 6 / 8;
-}
 
-.pedestal1 img,
-.pedestal2 img {
-    position: absolute;
-    height: 100%;
-    margin-top: 5%;
-    z-index: 2;
-}
-
-.pedestal1 img {
-    right: 0;
-}
-
-.pedestal2 img {
-    left: 0;
-    transform: rotateY(180deg);
+    & img {
+        left: 0;
+        transform: rotateY(180deg);
+    }
 }
 
 /*** TABLETS ***/
@@ -371,7 +372,6 @@ body::-webkit-scrollbar-thumb:hover {
     }
     
     .title {
-        /* font-size: 30px; */
         font-size: 26px;
         max-width: 100vw;  
         margin-bottom: 20px;      
@@ -478,20 +478,20 @@ body::-webkit-scrollbar-thumb:hover {
 
     .pedestal1 {
         grid-area: 5 / 1 / 7 / 3;
+
+        & img {
+            right: auto;
+            left: 0;
+        }
     }
     
     .pedestal2 {
         grid-area: 5 / 4 / 7 / 6;
-    }
 
-    .pedestal1 img {
-        right: auto;
-        left: 0;
-    }
-    
-    .pedestal2 img {
-        left: auto;
-        right: 0;
+        & img {
+            left: auto;
+            right: 0;
+        }
     }
 
     .avatar:hover:before {
